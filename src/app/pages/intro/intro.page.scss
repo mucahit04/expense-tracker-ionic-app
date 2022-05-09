@@ -1,0 +1,39 @@
+.intro {
+  --background: var(--ion-color-primary);
+  --ion-text-color: #fff;
+  --ion-item-background: transparent;
+
+  ion-radio {
+    --color-checked: #fff;
+    --color: #fff;
+  }
+
+  ion-list-header {
+    --color: #fff;
+  }
+}
+
+#introswiper {
+  &.swiper {
+    height: 100%;
+  }
+
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    padding: 70px;
+    text-align: center;
+  }
+
+  .swiper-pagination-bullet {
+    background: #fff;
+    opacity: 0.6;
+  }
+
+  .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: var(--ion-color-secondary);
+  }
+}

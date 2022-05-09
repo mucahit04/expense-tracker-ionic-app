@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" color="primary">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>New Transaction</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="addTransaction()"
+        color="success"
+        [disabled]="transaction.title ==='' || transaction.value === 0"
+      >
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="transaction.type">
+    <ion-segment-button [value]="0">
+      <ion-label>Expense</ion-label>
+    </ion-segment-button>
+    <ion-segment-button [value]="1">
+      <ion-label>Income</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-item>
+    <ion-label position="stacked">Amount</ion-label>
+    <ion-input
+      type="number"
+      [(ngModel)]="transaction.value"
+      inputmode="numeric"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Title</ion-label>
+    <ion-input type="text" [(ngModel)]="transaction.title"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Date</ion-label>
+    <ion-datetime presentation="date" [(ngModel)]="createdAt"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Notes</ion-label>
+    <ion-textarea type="text" [(ngModel)]="transaction.notes"></ion-textarea>
+  </ion-item>
+  <ion-item *ngIf="transaction.type == 0">
+    <ion-label position="stacked">Category</ion-label>
+    <ion-row>
+      <ion-col size="4" *ngFor="let category of categories">
+        <ion-button
+          (click)="transaction.category = category"
+          expand="block"
+          fill="clear"
+          [color]="transaction.category === category ? 'primary' : 'medium'"
+        >
+          <ion-icon slot="icon-only" [name]="category.icon"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-content>

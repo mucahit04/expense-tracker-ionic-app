@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>My Finances</ion-title>
+  </ion-toolbar>
+  <ion-segment [(ngModel)]="selectedView">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="grouped">
+      <ion-label>Grouped</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="trackExpense()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-list *ngIf="selectedView== 'all'">
+    <ion-item-sliding *ngFor="let transaction of transactions; let i = index;">
+      <ion-item routerLink="/details" [state]="{transaction:transaction}">
+        <ion-icon slot="start" [name]="transaction.category.icon"></ion-icon>
+        <ion-label>
+          <h2>{{transaction.title}}</h2>
+          <p>{{transaction.createdAt | date:'MMM dd'}}</p>
+        </ion-label>
+        <ion-text slot="end" [color]="transaction.type ? 'success' : 'danger'">
+          {{transaction.value | currency:selectedCurrency:'symbol'}}
+        </ion-text>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="removeTransaction(i)"
+          ><ion-icon slot="icon-only" name="trash"></ion-icon
+        ></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-accordion-group multiple="true" *ngIf="selectedView === 'grouped'">
+    <ion-accordion *ngFor="let group of transactionGroups">
+      <ion-item slot="header">
+        <ion-icon [name]="group.icon" slot="start" color="primary"></ion-icon>
+        <ion-label>{{ group.category }}</ion-label>
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item *ngFor="let trans of group.transactions">
+          <ion-label>
+            {{trans.value | currency:selectedCurrency:'symbol' }}
+            <p>{{ trans.title }}</p>
+          </ion-label>
+          <p slot="end">{{ trans.createdAt | date:'MMM dd' }}</p>
+        </ion-item>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>

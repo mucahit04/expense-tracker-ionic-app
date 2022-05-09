@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/tracker"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-breadcrumbs>
+    <ion-breadcrumb routerLink="/menu"> Tracker </ion-breadcrumb>
+    <ion-breadcrumb> {{transaction?.category.name}} </ion-breadcrumb>
+    <ion-breadcrumb> {{transaction?.title}} </ion-breadcrumb>
+  </ion-breadcrumbs>
+
+  <ion-card *ngIf="transaction">
+    <ion-card-header>
+      <ion-card-title
+        >{{ transaction.title}} - {{ transaction.createdAt | date:'MMM dd'}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content> {{ transaction.notes }} </ion-card-content>
+  </ion-card>
+</ion-content>
