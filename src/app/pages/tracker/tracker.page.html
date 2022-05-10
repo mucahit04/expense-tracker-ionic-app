@@ -22,6 +22,18 @@
     </ion-fab-button>
   </ion-fab>
   <ion-list *ngIf="selectedView== 'all'">
+    <ion-item>
+      <ion-label [color]="balanceColor">
+        <h1>
+          <span>Balance:</span>
+          {{balance | currency:selectedCurrency:'symbol'}}
+        </h1>
+      </ion-label>
+
+      <ion-icon slot="start" name="wallet" [color]="balanceColor"></ion-icon>
+    </ion-item>
+
+    <!-- <ion-label>Item Avatar</ion-label> -->
     <ion-item-sliding *ngFor="let transaction of transactions; let i = index;">
       <ion-item routerLink="/details" [state]="{transaction:transaction}">
         <ion-icon slot="start" [name]="transaction.category.icon"></ion-icon>

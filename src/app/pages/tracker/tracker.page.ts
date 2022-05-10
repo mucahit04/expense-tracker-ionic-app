@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ExpenseModalPage } from './../expense-modal/expense-modal.page';
-import { CashService, Transaction } from 'src/app/services/cash.service';
+import {
+  CashFlow,
+  CashService,
+  Transaction,
+} from 'src/app/services/cash.service';
 
 @Component({
   selector: 'app-tracker',
@@ -11,8 +15,10 @@ import { CashService, Transaction } from 'src/app/services/cash.service';
 export class TrackerPage implements OnInit {
   transactions: Transaction[] = [];
   selectedCurrency = '';
-  selectedView = 'grouped';
+  selectedView = 'all';
   transactionGroups = [];
+  balance: number = 0;
+  balanceColor: string = '';
 
   constructor(
     private modalCtrl: ModalController,
@@ -26,6 +32,7 @@ export class TrackerPage implements OnInit {
   }
 
   async loadTransactions() {
+    this.balance = 0;
     this.transactions = await this.cashService.getTransactions();
 
     this.transactionGroups = await this.cashService.getGroupedTransactions();
@@ -33,6 +40,31 @@ export class TrackerPage implements OnInit {
     this.selectedCurrency = (
       await this.cashService.getSelectedCurrency()
     ).toUpperCase();
+
+    this.transactions.forEach((transaction) => {
+      if (transaction.type === CashFlow.income) {
+        console.log(transaction.type);
+        this.balance += transaction.value;
+      } else {
+        console.log(transaction.type);
+        this.balance -= transaction.value;
+      }
+    });
+
+    switch (true) {
+      case this.balance < 100:
+        this.balanceColor = 'danger';
+        break;
+      case this.balance < 250:
+        this.balanceColor = 'warning';
+        break;
+      case this.balance < 500:
+        this.balanceColor = 'primary';
+        break;
+      default:
+        this.balanceColor = 'success';
+        break;
+    }
   }
 
   async trackExpense() {
